@@ -2,34 +2,36 @@
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
   <body th:replace="layout :: layout('Bài học', ~{::content})">
     <th:block th:fragment="content">
-      <div class="mb-3">
-        <a class="link-secondary small" th:href="@{/courses/{id}(id=${course.id})}">← Quay lại khóa học</a>
-      </div>
+      <div class="page">
+        <a th:href="@{/courses/{id}(id=${course.id})}">← Quay lại khóa học</a>
 
-      <div class="card">
-        <div class="card-body">
-          <div class="d-flex flex-wrap gap-2 align-items-center mb-2">
-            <span class="badge text-bg-secondary" th:text="${course.courseCode}">CODE</span>
-            <span class="badge text-bg-dark" th:text="${course.courseName}">Course</span>
-          </div>
-          <h1 class="h4" th:text="${lesson.lessonTitle}">Lesson title</h1>
+        <div class="card" style="margin-top: 1rem;">
+          <img src="https://via.placeholder.com/600x280" alt="Bài học">
+          <div class="content">
+            <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center; margin-bottom:0.5rem;">
+              <span class="badge" th:text="${course.courseCode}">CODE</span>
+              <span class="badge dark" th:text="${course.courseName}">Course</span>
+            </div>
+            <h4 th:text="${lesson.lessonTitle}">Lesson title</h4>
 
-          <div th:if="${currentUser == null}" class="alert alert-info">
-            Bạn cần <a th:href="@{/login}">đăng nhập</a> để học bài.
-          </div>
-          <div th:if="${currentUser != null and !enrolled}" class="alert alert-warning">
-            Bạn chưa đăng ký khóa học. Vui lòng quay lại và đăng ký trước.
-          </div>
-
-          <div th:if="${currentUser != null and enrolled}">
-            <div class="mb-3">
-              <div class="text-muted small mb-1">Nội dung</div>
-              <div class="border rounded p-3" th:text="${lesson.lessonContent}">Content</div>
+            <div th:if="${currentUser == null}" class="helper">
+              Bạn cần <a th:href="@{/login}">đăng nhập</a> để học bài.
+            </div>
+            <div th:if="${currentUser != null and !enrolled}" class="helper">
+              Bạn chưa đăng ký khóa học. Vui lòng quay lại và đăng ký trước.
             </div>
 
-            <form th:action="@{/courses/{courseId}/lessons/{lessonId}/complete(courseId=${course.id},lessonId=${lesson.id})}" method="post">
-              <button class="btn btn-success" type="submit">Đánh dấu hoàn thành</button>
-            </form>
+            <div th:if="${currentUser != null and enrolled}">
+              <div style="margin-top: 0.75rem;">
+                <div class="badge" style="margin-bottom: 0.5rem;">Nội dung</div>
+                <div style="border: 1px solid #ddd; border-radius: 8px; padding: 1rem; background: #fff;"
+                     th:text="${lesson.lessonContent}">Content</div>
+              </div>
+
+              <form th:action="@{/courses/{courseId}/lessons/{lessonId}/complete(courseId=${course.id},lessonId=${lesson.id})}" method="post">
+                <button type="submit" style="max-width: 260px; margin-top: 1rem;">Đánh dấu hoàn thành</button>
+              </form>
+            </div>
           </div>
         </div>
       </div>

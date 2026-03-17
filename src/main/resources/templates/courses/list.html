@@ -2,22 +2,20 @@
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
   <body th:replace="layout :: layout('Khóa học', ~{::content})">
     <th:block th:fragment="content">
-      <div class="d-flex align-items-center justify-content-between mb-3">
-        <h1 class="h4 mb-0">Danh sách khóa học</h1>
-        <div class="small text-muted">Chỉ hiển thị khóa học PUBLISHED</div>
-      </div>
-
-      <div class="row g-3">
-        <div class="col-md-6 col-lg-4" th:each="c : ${courses}">
-          <div class="card h-100">
-            <div class="card-body">
-              <div class="d-flex justify-content-between">
-                <div class="badge text-bg-secondary" th:text="${c.courseCode}">CODE</div>
-                <div class="badge text-bg-success" th:text="${c.status}">PUBLISHED</div>
+      <div class="page">
+        <h2>Danh sách khóa học</h2>
+        <div class="card-grid" style="margin-top: 1rem;">
+          <div class="card" th:each="c : ${courses}">
+            <img src="https://via.placeholder.com/600x280" alt="Khóa học">
+            <div class="content">
+              <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center; margin-bottom:0.5rem;">
+                <span class="badge" th:text="${c.courseCode}">CODE</span>
+                <span class="badge dark" th:text="${c.status}">PUBLISHED</span>
+                <span class="badge" th:if="${c.semester}" th:text="${c.semester}">SEM</span>
               </div>
-              <h2 class="h6 mt-3" th:text="${c.courseName}">Course name</h2>
-              <p class="text-muted small mb-3" th:text="${#strings.abbreviate(c.description, 120)}">desc</p>
-              <a class="btn btn-primary btn-sm" th:href="@{/courses/{id}(id=${c.id})}">Xem chi tiết</a>
+              <h4 th:text="${c.courseName}">Course name</h4>
+              <p th:text="${#strings.abbreviate(c.description, 140)}">desc</p>
+              <a class="btn-link" th:href="@{/courses/{id}(id=${c.id})}">Xem chi tiết →</a>
             </div>
           </div>
         </div>
