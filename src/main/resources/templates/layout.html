@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -9,18 +9,18 @@
   <body th:fragment="layout(pageTitle, content)">
     <header>
       <nav id="top-nav">
-        <div class="logo"><a th:href="@{/}">E-Learning CNTT</a></div>
+        <div class="logo"><a th:href="@{/}">E-Learning IT</a></div>
         <div class="nav-toggle" role="button" aria-label="Toggle navigation" onclick="toggleNav()">&#9776;</div>
         <div class="links">
-          <a th:href="@{/courses}">Khóa học</a>
-          <a th:if="${currentUser == null}" th:href="@{/login}">Đăng nhập</a>
-          <a th:if="${currentUser == null}" th:href="@{/register}">Đăng ký</a>
+          <a th:href="@{/courses}">Courses</a>
+          <a th:if="${currentUser == null}" th:href="@{/login}">Login</a>
+          <a th:if="${currentUser == null}" th:href="@{/register}">Register</a>
           <span th:if="${currentUser != null}">
-            Xin chào, <strong th:text="${currentUser.fullName}">User</strong>
+            Hello, <strong th:text="${currentUser.fullName}">User</strong>
             (<span th:text="${currentUser.role}">ROLE</span>)
           </span>
           <form th:if="${currentUser != null}" th:action="@{/logout}" method="post" style="display:inline;">
-            <button type="submit" style="width:auto; padding:0.35rem 0.75rem;">Đăng xuất</button>
+            <button type="submit" style="width:auto; padding:0.35rem 0.75rem;">Logout</button>
           </form>
         </div>
       </nav>
@@ -34,7 +34,7 @@
     <div th:if="${error}" class="toast error" th:text="${error}"></div>
 
     <footer>
-      &copy; <span th:text="${#dates.format(#dates.createNow(), 'yyyy')}">2026</span> E-Learning CNTT. All rights reserved.
+      &copy; <span th:text="${#dates.format(#dates.createNow(), 'yyyy')}">2026</span> E-Learning IT. All rights reserved.
     </footer>
 
     <script>

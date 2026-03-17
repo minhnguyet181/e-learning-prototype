@@ -1,25 +1,25 @@
 <!doctype html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
-  <body th:replace="layout :: layout('Đăng nhập', ~{::content})">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <body th:replace="layout :: layout('Login', ~{::content})">
     <th:block th:fragment="content">
       <main>
         <div class="container">
-          <h2>Đăng nhập</h2>
+          <h2>Login</h2>
           <form th:action="@{/login}" th:object="${form}" method="post">
             <label>Email</label>
             <input th:field="*{email}" type="email" autocomplete="email" />
             <div class="error-text" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
 
-            <label>Mật khẩu</label>
+            <label>Password</label>
             <input th:field="*{password}" type="password" autocomplete="current-password" />
             <div class="error-text" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
 
-            <button type="submit">Đăng nhập</button>
+            <button type="submit">Login</button>
           </form>
 
-          <p><a th:href="@{/forgot-password}">Quên mật khẩu?</a></p>
+          <p><a th:href="@{/forgot-password}">Forgot password?</a></p>
           <div class="helper">
-            Chưa có tài khoản? <a th:href="@{/register}">Đăng ký</a>
+            Don't have an account? <a th:href="@{/register}">Register</a>
           </div>
         </div>
       </main>

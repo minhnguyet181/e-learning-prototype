@@ -89,14 +89,14 @@ public class AuthController {
 
     // Check password confirmation
     if (!form.getPassword().equals(form.getConfirmPassword())) {
-      ra.addFlashAttribute("error", "Mật khẩu xác nhận không khớp");
+      ra.addFlashAttribute("error", "Passwords do not match");
       ra.addFlashAttribute("form", form);
       return "redirect:/register";
     }
 
     try {
       authService.register(form.getEmail(), form.getFullName(), form.getPassword());
-      ra.addFlashAttribute("success", "Đăng ký thành công. Vui lòng đăng nhập.");
+      ra.addFlashAttribute("success", "Registration successful. Please login with your credentials.");
       return "redirect:/login";
     } catch (IllegalArgumentException e) {
       ra.addFlashAttribute("error", e.getMessage());

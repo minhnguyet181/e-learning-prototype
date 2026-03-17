@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
-  <body th:replace="layout :: layout('Chi tiết khóa học', ~{::content})">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <body th:replace="layout :: layout('Course Details', ~{::content})">
     <th:block th:fragment="content">
       <div class="page">
-        <a th:href="@{/courses}">← Quay lại danh sách</a>
+        <a th:href="@{/courses}">← Back to courses</a>
 
         <div class="card" style="margin-top: 1rem;">
-          <img src="https://via.placeholder.com/600x280" alt="Khóa học">
+          <img src="https://via.placeholder.com/600x280" alt="Course">
           <div class="content">
             <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center; margin-bottom:0.5rem;">
               <span class="badge" th:text="${course.courseCode}">CODE</span>
@@ -17,37 +17,37 @@
             <p th:text="${course.description}">desc</p>
 
             <div th:if="${currentUser == null}" class="helper">
-              Bạn cần <a th:href="@{/login}">đăng nhập</a> để đăng ký khóa học và vào bài học.
+              You need to <a th:href="@{/login}">login</a> to enroll and access lessons.
             </div>
 
             <div th:if="${currentUser != null}">
               <div th:if="${enrolled}" class="helper">
-                <span class="badge dark">Đã đăng ký</span>
+                <span class="badge dark">Enrolled</span>
               </div>
               <div th:if="${!enrolled}">
                 <form th:action="@{/courses/{id}/enroll(id=${course.id})}" method="post" style="margin-top: 0.75rem;">
                   <div th:if="${course.enrollPassword != null and !#strings.isEmpty(course.enrollPassword)}">
-                    <label>Mật khẩu khóa học</label>
-                    <input name="password" placeholder="VD: join123" />
-                    <div class="helper">Khóa demo dùng password: <strong>join123</strong></div>
+                    <label>Course Password</label>
+                    <input name="password" placeholder="E.g: join123" />
+                    <div class="helper">Demo course password: <strong>join123</strong></div>
                   </div>
-                  <button type="submit" style="max-width: 220px; margin-top: 0.75rem;">Đăng ký</button>
+                  <button type="submit" style="max-width: 220px; margin-top: 0.75rem;">Enroll</button>
                 </form>
               </div>
             </div>
           </div>
         </div>
 
-        <h2 style="margin-top: 1.5rem;">Danh sách bài học</h2>
+        <h2 style="margin-top: 1.5rem;">Lessons</h2>
         <div class="card-grid" style="margin-top: 1rem;">
           <a class="card"
              th:each="l : ${lessons}"
              th:href="@{/courses/{courseId}/lessons/{lessonId}(courseId=${course.id},lessonId=${l.id})}">
-            <img src="https://via.placeholder.com/600x280" alt="Bài học">
+            <img src="https://via.placeholder.com/600x280" alt="Lesson">
             <div class="content">
               <h4 th:text="${l.lessonOrder + '. ' + l.lessonTitle}">Lesson</h4>
               <p th:text="${#strings.abbreviate(l.lessonContent, 120)}">preview</p>
-              <span class="badge">Mở</span>
+              <span class="badge">Open</span>
             </div>
           </a>
         </div>
@@ -55,4 +55,3 @@
     </th:block>
   </body>
 </html>
-

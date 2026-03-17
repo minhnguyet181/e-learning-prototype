@@ -1,34 +1,34 @@
 <!doctype html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
-  <body th:replace="layout :: layout('Trang chủ', ~{::content})">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <body th:replace="layout :: layout('Home', ~{::content})">
     <th:block th:fragment="content">
       <section class="hero">
-        <img class="hero-img" alt="E-Learning Khoa CNTT"
+        <img class="hero-img" alt="E-Learning IT"
              th:src="@{/e-learning.jpg}" />
         <div class="hero-text">
-          <h1>Cổng E‑Learning Khoa Công nghệ Thông tin</h1>
+          <h1>E-Learning Portal - IT Faculty</h1>
           <p>
-            Nơi học tập, làm bài và theo dõi tiến độ cho sinh viên — quản lý học phần cho giảng viên.
+            Your complete learning hub for coursework, assignments, and progress tracking — Faculty management console.
           </p>
 
           <div style="display:flex; gap:0.75rem; justify-content:center; flex-wrap:wrap; margin-top: 0.75rem;">
             <a th:href="@{/courses}">
-              <button type="button" style="max-width: 220px;">Xem khóa học</button>
+              <button type="button" style="max-width: 220px;">View Courses</button>
             </a>
             <a th:if="${currentUser == null}" th:href="@{/login}">
               <button type="button" style="max-width: 220px; background:#ffffff; color:#0a66c2; border:1px solid #0a66c2;">
-                Đăng nhập
+                Login
               </button>
             </a>
           </div>
 
           <div class="container" style="max-width: 720px; margin: 1.25rem auto 0; text-align:left;">
-            <h2 style="color:#0a66c2; margin-bottom: 0.5rem;">Tìm khóa học nhanh</h2>
+            <h2 style="color:#0a66c2; margin-bottom: 0.5rem;">Search Courses</h2>
             <form th:action="@{/courses}" method="get">
-              <label style="margin-top:0;">Từ khóa</label>
-              <input name="q" placeholder="VD: SE-101, Java, Cấu trúc dữ liệu..." />
-              <button type="submit" style="max-width: 220px;">Tìm kiếm</button>
-              <div class="helper">Prototype hiện demo danh sách khóa học PUBLISHED.</div>
+              <label style="margin-top:0;">Keywords</label>
+              <input name="q" placeholder="E.g: SE-101, Java, Data Structures..." />
+              <button type="submit" style="max-width: 220px;">Search</button>
+              <div class="helper">Demo prototype showing published courses.</div>
             </form>
           </div>
         </div>
@@ -36,65 +36,65 @@
 
       <section class="features">
         <div class="feature-card">
-          <h3>Học phần & bài học</h3>
-          <p>Truy cập bài giảng, tài liệu và video theo từng học phần.</p>
+          <h3>Courses & Lessons</h3>
+          <p>Access lecture materials, documents and videos for each course.</p>
         </div>
         <div class="feature-card">
-          <h3>Bài tập & đánh giá</h3>
-          <p>Nộp bài, làm quiz và nhận phản hồi/điểm từ giảng viên.</p>
+          <h3>Assignments & Grading</h3>
+          <p>Submit work, take quizzes and receive feedback from instructors.</p>
         </div>
         <div class="feature-card">
-          <h3>Thảo luận</h3>
-          <p>Hỏi đáp theo lớp/học phần, trao đổi bài và nhận thông báo.</p>
+          <h3>Discussions</h3>
+          <p>Q&A, peer collaboration and notifications per course.</p>
         </div>
       </section>
 
       <section class="page">
-        <h2>Thông báo & tin tức</h2>
+        <h2>Announcements & News</h2>
       </section>
       <section class="card-grid" style="margin-top: 1rem;">
         <div class="card">
-          <img src="https://via.placeholder.com/600x280" alt="Thông báo">
+          <img src="https://via.placeholder.com/600x280" alt="Announcement">
           <div class="content">
-            <h4>Hướng dẫn sử dụng hệ thống</h4>
-            <p>Đăng nhập, đăng ký học phần, vào bài học và cập nhật tiến độ.</p>
+            <h4>Getting Started Guide</h4>
+            <p>Login, enroll in courses, access lessons and track your progress.</p>
             <span class="badge">ANNOUNCEMENT</span>
           </div>
         </div>
         <div class="card">
-          <img src="https://via.placeholder.com/600x280" alt="Tin tức">
+          <img src="https://via.placeholder.com/600x280" alt="News">
           <div class="content">
-            <h4>Lịch học & deadline tuần này</h4>
-            <p>Tổng hợp deadline bài tập/quiz theo từng học phần (demo UI).</p>
+            <h4>This Week's Schedule & Deadlines</h4>
+            <p>Assignment and quiz deadlines across all your courses (demo UI).</p>
             <span class="badge">NEWS</span>
           </div>
         </div>
       </section>
 
       <section class="page">
-        <h2>Khóa học nổi bật</h2>
+        <h2>Featured Courses</h2>
       </section>
       <section class="card-grid" style="margin-top: 1rem;">
         <div class="card">
-          <img src="https://via.placeholder.com/600x280" alt="Khóa học">
+          <img src="https://via.placeholder.com/600x280" alt="Course">
           <div class="content">
-            <h4>Nhập môn Kỹ nghệ phần mềm</h4>
-            <p>Luồng demo: list → detail → lesson → đánh dấu hoàn thành.</p>
-            <a class="btn-link" th:href="@{/courses}">Xem danh sách khóa học →</a>
+            <h4>Introduction to Software Engineering</h4>
+            <p>Demo flow: course list → details → lessons → mark complete.</p>
+            <a class="btn-link" th:href="@{/courses}">View all courses →</a>
           </div>
         </div>
         <div class="card">
-          <img src="https://via.placeholder.com/600x280" alt="Khóa học">
+          <img src="https://via.placeholder.com/600x280" alt="Course">
           <div class="content">
-            <h4>CTDL & Giải thuật</h4>
-            <p>Ví dụ học phần CNTT phổ biến để minh họa giao diện.</p>
+            <h4>Data Structures & Algorithms</h4>
+            <p>Example IT course demonstrating full platform interface.</p>
             <span class="badge">Coming soon</span>
           </div>
         </div>
       </section>
 
       <section class="page">
-        <h2>Lối tắt theo vai trò</h2>
+        <h2>Role-Based Shortcuts</h2>
         <div class="card-grid" style="margin-top: 1rem;">
           <div class="card">
             <div class="content">

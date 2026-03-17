@@ -24,7 +24,7 @@ public class AuthService {
   @Transactional
   public User register(String email, String fullName, String rawPassword) {
     if (userRepository.existsByEmail(email)) {
-      throw new IllegalArgumentException("Email đã tồn tại");
+      throw new IllegalArgumentException("Email already exists");
     }
 
     User u = new User();
@@ -38,12 +38,12 @@ public class AuthService {
 
   @Transactional
   public User login(String email, String rawPassword) {
-    User u = userRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("Sai email hoặc mật khẩu"));
+    User u = userRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("Invalid email or password"));
     if (Boolean.FALSE.equals(u.getActive()) || Boolean.TRUE.equals(u.getLocked())) {
-      throw new IllegalArgumentException("Tài khoản đang bị khóa hoặc không hoạt động");
+      throw new IllegalArgumentException("Account is locked or inactive");
     }
     if (!passwordService.matches(rawPassword, u.getPasswordHash())) {
-      throw new IllegalArgumentException("Sai email hoặc mật khẩu");
+      throw new IllegalArgumentException("Invalid email or password");
     }
     u.setLastLogin(Instant.now());
     return userRepository.save(u);
