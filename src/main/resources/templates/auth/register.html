@@ -1,36 +1,38 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-  <body th:replace="layout :: layout('Register', ~{::content})">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+  <body th:replace="layout :: layout('Đăng ký', ~{::content})">
     <th:block th:fragment="content">
-      <main>
+      <div class="auth-wrapper">
         <div class="container">
-          <h2>Register</h2>
+          <h2>Đăng ký tài khoản</h2>
+
+          <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+
           <form th:action="@{/register}" th:object="${form}" method="post">
-            <label>Full Name</label>
-            <input th:field="*{fullName}" autocomplete="name" />
+            <label for="fullName">Họ và tên</label>
+            <input th:field="*{fullName}" id="fullName" autocomplete="name" placeholder="Nguyễn Văn A" />
             <div class="error-text" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></div>
 
-            <label>Email</label>
-            <input th:field="*{email}" type="email" autocomplete="email" />
+            <label for="email">Email</label>
+            <input th:field="*{email}" id="email" type="email" autocomplete="email" placeholder="example@email.com" />
             <div class="error-text" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
 
-            <label>Password</label>
-            <input th:field="*{password}" type="password" autocomplete="new-password" />
+            <label for="password">Mật khẩu</label>
+            <input th:field="*{password}" id="password" type="password" autocomplete="new-password" placeholder="Tối thiểu 6 ký tự" />
             <div class="error-text" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
 
-            <label>Confirm Password</label>
-            <input th:field="*{confirmPassword}" type="password" autocomplete="new-password" />
+            <label for="confirmPassword">Xác nhận mật khẩu</label>
+            <input th:field="*{confirmPassword}" id="confirmPassword" type="password" autocomplete="new-password" placeholder="Nhập lại mật khẩu" />
             <div class="error-text" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></div>
 
-            <button type="submit">Register</button>
+            <button type="submit" style="margin-top:1rem;">Đăng ký</button>
           </form>
 
-          <div class="helper">
-            Already have an account? <a th:href="@{/login}">Login</a>
+          <div class="auth-links">
+            Đã có tài khoản? <a th:href="@{/login}">Đăng nhập</a>
           </div>
         </div>
-      </main>
+      </div>
     </th:block>
   </body>
 </html>
-

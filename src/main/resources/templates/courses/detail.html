@@ -1,55 +1,65 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-  <body th:replace="layout :: layout('Course Details', ~{::content})">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+  <body th:replace="layout :: layout('Chi tiết khóa học', ~{::content})">
     <th:block th:fragment="content">
       <div class="page">
-        <a th:href="@{/courses}">← Back to courses</a>
+        <a class="back-link" th:href="@{/courses}">← Danh sách khóa học</a>
 
-        <div class="card" style="margin-top: 1rem;">
-          <img src="https://via.placeholder.com/600x280" alt="Course">
+        <div class="card detail-card" style="margin-top: 1rem;">
+          <div class="card-thumb">
+            <img th:src="${course.thumbnailUrl} ?: 'https://via.placeholder.com/1200x400/e6f0ff/0a66c2?text=' + ${course.courseCode}"
+                 th:alt="${course.courseName}" />
+          </div>
           <div class="content">
-            <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center; margin-bottom:0.5rem;">
+            <div class="badge-row">
               <span class="badge" th:text="${course.courseCode}">CODE</span>
               <span class="badge dark" th:text="${course.status}">STATUS</span>
               <span class="badge" th:if="${course.semester}" th:text="${course.semester}">SEM</span>
+              <span class="badge" th:if="${course.academicYear}" th:text="${course.academicYear}">YEAR</span>
             </div>
-            <h4 th:text="${course.courseName}">Course name</h4>
-            <p th:text="${course.description}">desc</p>
+            <h3 th:text="${course.courseName}" style="margin: 0.75rem 0 0.5rem;">Tên khóa học</h3>
+            <p th:text="${course.description}" style="color:#555;">Mô tả</p>
 
-            <div th:if="${currentUser == null}" class="helper">
-              You need to <a th:href="@{/login}">login</a> to enroll and access lessons.
-            </div>
-
-            <div th:if="${currentUser != null}">
-              <div th:if="${enrolled}" class="helper">
-                <span class="badge dark">Enrolled</span>
+            <div class="enroll-section">
+              <div th:if="${currentUser == null}" class="alert alert-info">
+                Bạn cần <a th:href="@{/login}">đăng nhập</a> để đăng ký và xem bài giảng.
               </div>
-              <div th:if="${!enrolled}">
-                <form th:action="@{/courses/{id}/enroll(id=${course.id})}" method="post" style="margin-top: 0.75rem;">
-                  <div th:if="${course.enrollPassword != null and !#strings.isEmpty(course.enrollPassword)}">
-                    <label>Course Password</label>
-                    <input name="password" placeholder="E.g: join123" />
-                    <div class="helper">Demo course password: <strong>join123</strong></div>
+
+              <div th:if="${currentUser != null and enrolled}" style="margin-top:0.75rem;">
+                <span class="badge dark" style="font-size:0.95rem; padding:0.35rem 0.85rem;">✓ Đã đăng ký</span>
+              </div>
+
+              <div th:if="${currentUser != null and !enrolled}" style="margin-top:0.75rem;">
+                <form th:action="@{/courses/{id}/enroll(id=${course.id})}" method="post" class="enroll-form">
+                  <div th:if="${course.enrollPassword != null and !#strings.isEmpty(course.enrollPassword)}" class="enroll-password">
+                    <label for="coursePassword">Mật khẩu khóa học</label>
+                    <input id="coursePassword" name="password" type="password" placeholder="Nhập mật khẩu khóa học" />
+                    <div class="helper">Demo: mật khẩu là <strong>join123</strong></div>
                   </div>
-                  <button type="submit" style="max-width: 220px; margin-top: 0.75rem;">Enroll</button>
+                  <button type="submit" class="btn-enroll">Đăng ký khóa học</button>
                 </form>
               </div>
             </div>
           </div>
         </div>
 
-        <h2 style="margin-top: 1.5rem;">Lessons</h2>
-        <div class="card-grid" style="margin-top: 1rem;">
-          <a class="card"
-             th:each="l : ${lessons}"
-             th:href="@{/courses/{courseId}/lessons/{lessonId}(courseId=${course.id},lessonId=${l.id})}">
-            <img src="https://via.placeholder.com/600x280" alt="Lesson">
-            <div class="content">
-              <h4 th:text="${l.lessonOrder + '. ' + l.lessonTitle}">Lesson</h4>
-              <p th:text="${#strings.abbreviate(l.lessonContent, 120)}">preview</p>
-              <span class="badge">Open</span>
-            </div>
-          </a>
+        <div style="margin-top: 2rem;">
+          <h2>Danh sách bài giảng</h2>
+          <div th:if="${#lists.isEmpty(lessons)}" class="empty-state" style="margin-top:1rem;">
+            <p>Chưa có bài giảng nào.</p>
+          </div>
+          <div class="lesson-list" th:unless="${#lists.isEmpty(lessons)}">
+            <a class="lesson-item"
+               th:each="l : ${lessons}"
+               th:href="@{/courses/{courseId}/lessons/{lessonId}(courseId=${course.id},lessonId=${l.id})}">
+              <div class="lesson-order" th:text="${l.lessonOrder}">1</div>
+              <div class="lesson-info">
+                <div class="lesson-title" th:text="${l.lessonTitle}">Tên bài</div>
+                <div class="lesson-preview" th:text="${#strings.abbreviate(l.lessonContent ?: '', 100)}">preview</div>
+              </div>
+              <div class="lesson-arrow">→</div>
+            </a>
+          </div>
         </div>
       </div>
     </th:block>

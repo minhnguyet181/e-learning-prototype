@@ -1,29 +1,33 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-  <body th:replace="layout :: layout('Login', ~{::content})">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+  <body th:replace="layout :: layout('Đăng nhập', ~{::content})">
     <th:block th:fragment="content">
-      <main>
+      <div class="auth-wrapper">
         <div class="container">
-          <h2>Login</h2>
+          <h2>Đăng nhập</h2>
+
+          <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+          <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+
           <form th:action="@{/login}" th:object="${form}" method="post">
-            <label>Email</label>
-            <input th:field="*{email}" type="email" autocomplete="email" />
+            <label for="email">Email</label>
+            <input th:field="*{email}" id="email" type="email" autocomplete="email" placeholder="example@email.com" />
             <div class="error-text" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
 
-            <label>Password</label>
-            <input th:field="*{password}" type="password" autocomplete="current-password" />
+            <label for="password">Mật khẩu</label>
+            <input th:field="*{password}" id="password" type="password" autocomplete="current-password" placeholder="••••••••" />
             <div class="error-text" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
 
-            <button type="submit">Login</button>
+            <button type="submit" style="margin-top:1rem;">Đăng nhập</button>
           </form>
 
-          <p><a th:href="@{/forgot-password}">Forgot password?</a></p>
-          <div class="helper">
-            Don't have an account? <a th:href="@{/register}">Register</a>
+          <div class="auth-links">
+            <a th:href="@{/forgot-password}">Quên mật khẩu?</a>
+            <span class="sep">·</span>
+            <a th:href="@{/register}">Tạo tài khoản mới</a>
           </div>
         </div>
-      </main>
+      </div>
     </th:block>
   </body>
 </html>
-

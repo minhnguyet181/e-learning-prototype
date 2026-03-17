@@ -1,27 +1,31 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-  <head>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+  <head th:fragment="head(pageTitle)">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title th:text="${pageTitle} ?: 'E-Learning'">E-Learning</title>
+    <title th:text="${pageTitle} + ' | E-Learning'">E-Learning</title>
     <link rel="stylesheet" th:href="@{/css/style.css}" />
   </head>
   <body th:fragment="layout(pageTitle, content)">
     <header>
       <nav id="top-nav">
         <div class="logo"><a th:href="@{/}">E-Learning IT</a></div>
-        <div class="nav-toggle" role="button" aria-label="Toggle navigation" onclick="toggleNav()">&#9776;</div>
+        <div class="nav-toggle" role="button" aria-label="Toggle navigation" tabindex="0" onclick="toggleNav()">&#9776;</div>
         <div class="links">
-          <a th:href="@{/courses}">Courses</a>
-          <a th:if="${currentUser == null}" th:href="@{/login}">Login</a>
-          <a th:if="${currentUser == null}" th:href="@{/register}">Register</a>
-          <span th:if="${currentUser != null}">
-            Hello, <strong th:text="${currentUser.fullName}">User</strong>
-            (<span th:text="${currentUser.role}">ROLE</span>)
-          </span>
-          <form th:if="${currentUser != null}" th:action="@{/logout}" method="post" style="display:inline;">
-            <button type="submit" style="width:auto; padding:0.35rem 0.75rem;">Logout</button>
-          </form>
+          <a th:href="@{/courses}">Khóa học</a>
+          <th:block th:if="${currentUser == null}">
+            <a th:href="@{/login}">Đăng nhập</a>
+            <a th:href="@{/register}">Đăng ký</a>
+          </th:block>
+          <th:block th:if="${currentUser != null}">
+            <span class="nav-user">
+              Xin chào, <strong th:text="${currentUser.fullName}">User</strong>
+              <span class="badge" th:text="${currentUser.role}">ROLE</span>
+            </span>
+            <form th:action="@{/logout}" method="post" style="display:inline;">
+              <button type="submit" class="btn-logout">Đăng xuất</button>
+            </form>
+          </th:block>
         </div>
       </nav>
     </header>
@@ -34,7 +38,7 @@
     <div th:if="${error}" class="toast error" th:text="${error}"></div>
 
     <footer>
-      &copy; <span th:text="${#dates.format(#dates.createNow(), 'yyyy')}">2026</span> E-Learning IT. All rights reserved.
+      &copy; 2026 E-Learning IT. All rights reserved.
     </footer>
 
     <script>
@@ -42,7 +46,10 @@
         const nav = document.getElementById('top-nav');
         nav && nav.classList.toggle('open');
       }
+      // Auto-hide toast after 4s
+      document.querySelectorAll('.toast').forEach(function(t) {
+        setTimeout(function() { t.style.opacity = '0'; setTimeout(function(){ t.remove(); }, 400); }, 4000);
+      });
     </script>
   </body>
 </html>
-

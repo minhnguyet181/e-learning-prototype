@@ -29,24 +29,24 @@ public class LessonController {
 
   @GetMapping("/courses/{courseId}/lessons/{lessonId}")
   public String view(
-      @PathVariable Long courseId, @PathVariable Long lessonId, HttpSession session, Model model) {
+      @PathVariable Long courseId, @PathVariable Long lessonId, HttpSession session, Model model, RedirectAttributes ra) {
     Course course = courseService.requireCourse(courseId);
     Lesson lesson = lessonService.requireLesson(lessonId);
 
     Long userId = (Long) session.getAttribute(SessionKeys.USER_ID);
-    User currentUser = null;
-    boolean enrolled = false;
-    if (userId != null) {
-      currentUser = userRepository.findById(userId).orElse(null);
-      if (currentUser != null) {
-        enrolled = courseService.isEnrolled(currentUser, course);
-      }
+    if (userId == null) {
+      return "redirect:/login";
+    }
+
+    User currentUser = userRepository.findById(userId).orElse(null);
+    boolean enrolled = currentUser != null && courseService.isEnrolled(currentUser, course);
+    if (!enrolled) {
+      return "redirect:/courses/" + courseId;
     }
 
     model.addAttribute("course", course);
     model.addAttribute("lesson", lesson);
-    model.addAttribute("currentUser", currentUser);
-    model.addAttribute("enrolled", enrolled);
+    model.addAttribute("enrolled", true);
     return "lessons/view";
   }
 

@@ -68,6 +68,21 @@ public class AuthController {
     return "auth/forgot-password";
   }
 
+  @PostMapping("/forgot-password")
+  public String forgotPassword(
+      @Valid @ModelAttribute("form") ForgotPasswordForm form,
+      BindingResult bindingResult,
+      RedirectAttributes ra) {
+    if (bindingResult.hasErrors()) {
+      ra.addFlashAttribute("org.springframework.validation.BindingResult.form", bindingResult);
+      ra.addFlashAttribute("form", form);
+      return "redirect:/forgot-password";
+    }
+    // Always show success to avoid email enumeration
+    ra.addFlashAttribute("success", "Nếu email tồn tại trong hệ thống, bạn sẽ nhận được hướng dẫn đặt lại mật khẩu.");
+    return "redirect:/forgot-password";
+  }
+
   @GetMapping("/register")
   public String registerForm(Model model) {
     if (!model.containsAttribute("form")) {

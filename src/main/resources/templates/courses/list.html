@@ -1,21 +1,41 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-  <body th:replace="layout :: layout('Courses', ~{::content})">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+  <body th:replace="layout :: layout('Khóa học', ~{::content})">
     <th:block th:fragment="content">
       <div class="page">
-        <h2>Course List</h2>
-        <div class="card-grid" style="margin-top: 1rem;">
+        <div class="page-header">
+          <h2>Danh sách khóa học</h2>
+          <form th:action="@{/courses}" method="get" class="search-form">
+            <input name="q" th:value="${q}" placeholder="Tìm theo tên, mã môn..." />
+            <button type="submit">Tìm</button>
+          </form>
+        </div>
+
+        <div th:if="${q != null and !#strings.isEmpty(q)}" class="search-result-info">
+          Kết quả tìm kiếm cho: <strong th:text="${q}"></strong>
+          <a th:href="@{/courses}" style="margin-left:0.5rem;">✕ Xóa bộ lọc</a>
+        </div>
+
+        <div th:if="${#lists.isEmpty(courses)}" class="empty-state">
+          <p>Không tìm thấy khóa học nào.</p>
+          <a th:href="@{/courses}">Xem tất cả khóa học</a>
+        </div>
+
+        <div class="card-grid" th:unless="${#lists.isEmpty(courses)}" style="margin-top: 1rem;">
           <div class="card" th:each="c : ${courses}">
-            <img src="https://via.placeholder.com/600x280" alt="Course">
+            <div class="card-thumb">
+              <img th:src="${c.thumbnailUrl} ?: 'https://via.placeholder.com/600x280/e6f0ff/0a66c2?text=' + ${c.courseCode}"
+                   th:alt="${c.courseName}" />
+            </div>
             <div class="content">
-              <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center; margin-bottom:0.5rem;">
+              <div class="badge-row">
                 <span class="badge" th:text="${c.courseCode}">CODE</span>
                 <span class="badge dark" th:text="${c.status}">PUBLISHED</span>
                 <span class="badge" th:if="${c.semester}" th:text="${c.semester}">SEM</span>
               </div>
-              <h4 th:text="${c.courseName}">Course name</h4>
-              <p th:text="${#strings.abbreviate(c.description, 140)}">desc</p>
-              <a class="btn-link" th:href="@{/courses/{id}(id=${c.id})}">View details →</a>
+              <h4 th:text="${c.courseName}">Tên khóa học</h4>
+              <p th:text="${#strings.abbreviate(c.description ?: '', 140)}">Mô tả</p>
+              <a class="btn-link" th:href="@{/courses/{id}(id=${c.id})}">Xem chi tiết →</a>
             </div>
           </div>
         </div>
@@ -23,4 +43,3 @@
     </th:block>
   </body>
 </html>
-

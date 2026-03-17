@@ -1,41 +1,41 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-  <body th:replace="layout :: layout('Lesson', ~{::content})">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+  <body th:replace="layout :: layout('Bài giảng', ~{::content})">
     <th:block th:fragment="content">
       <div class="page">
-        <a th:href="@{/courses/{id}(id=${course.id})}">← Back to course</a>
+        <a class="back-link" th:href="@{/courses/{id}(id=${course.id})}">← Quay lại khóa học</a>
 
-        <div class="card" style="margin-top: 1rem;">
-          <img src="https://via.placeholder.com/600x280" alt="Lesson">
-          <div class="content">
-            <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center; margin-bottom:0.5rem;">
+        <div class="lesson-view-card" style="margin-top: 1rem;">
+          <div class="lesson-view-header">
+            <div class="badge-row">
               <span class="badge" th:text="${course.courseCode}">CODE</span>
               <span class="badge dark" th:text="${course.courseName}">Course</span>
             </div>
-            <h4 th:text="${lesson.lessonTitle}">Lesson title</h4>
+            <h2 th:text="${lesson.lessonTitle}" style="margin-top:0.75rem;">Tên bài giảng</h2>
+          </div>
 
-            <div th:if="${currentUser == null}" class="helper">
-              You need to <a th:href="@{/login}">login</a> to access lessons.
-            </div>
-            <div th:if="${currentUser != null and !enrolled}" class="helper">
-              You are not enrolled in this course. Please go back and enroll first.
+          <div class="lesson-view-body">
+            <div th:if="${lesson.videoUrl != null and !#strings.isEmpty(lesson.videoUrl)}" class="video-wrapper">
+              <iframe th:src="${lesson.videoUrl}" allowfullscreen title="Video bài giảng"></iframe>
             </div>
 
-            <div th:if="${currentUser != null and enrolled}">
-              <div style="margin-top: 0.75rem;">
-                <div class="badge" style="margin-bottom: 0.5rem;">Content</div>
-                <div style="border: 1px solid #ddd; border-radius: 8px; padding: 1rem; background: #fff;"
-                     th:text="${lesson.lessonContent}">Content</div>
-              </div>
-
-              <form th:action="@{/courses/{courseId}/lessons/{lessonId}/complete(courseId=${course.id},lessonId=${lesson.id})}" method="post">
-                <button type="submit" style="max-width: 260px; margin-top: 1rem;">Mark as Complete</button>
-              </form>
+            <div class="lesson-content-box">
+              <h4 style="margin-bottom:0.75rem; color:#0a66c2;">Nội dung bài giảng</h4>
+              <div th:text="${lesson.lessonContent}">Nội dung</div>
             </div>
+
+            <div th:if="${lesson.documentUrl != null and !#strings.isEmpty(lesson.documentUrl)}" class="doc-link">
+              <a th:href="${lesson.documentUrl}" target="_blank" rel="noopener">📄 Tải tài liệu đính kèm</a>
+            </div>
+          </div>
+
+          <div class="lesson-view-footer">
+            <form th:action="@{/courses/{courseId}/lessons/{lessonId}/complete(courseId=${course.id},lessonId=${lesson.id})}" method="post">
+              <button type="submit" class="btn-complete">✓ Đánh dấu hoàn thành</button>
+            </form>
           </div>
         </div>
       </div>
     </th:block>
   </body>
 </html>
-

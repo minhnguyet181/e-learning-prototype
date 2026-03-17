@@ -29,8 +29,18 @@ public class CourseController {
   }
 
   @GetMapping("/courses")
-  public String list(Model model) {
-    model.addAttribute("courses", courseService.listPublishedCourses());
+  public String list(@RequestParam(name = "q", required = false) String q, Model model) {
+    List<Course> courses = courseService.listPublishedCourses();
+    if (q != null && !q.isBlank()) {
+      String lower = q.toLowerCase();
+      courses = courses.stream()
+          .filter(c -> c.getCourseName().toLowerCase().contains(lower)
+              || c.getCourseCode().toLowerCase().contains(lower)
+              || (c.getDescription() != null && c.getDescription().toLowerCase().contains(lower)))
+          .toList();
+    }
+    model.addAttribute("courses", courses);
+    model.addAttribute("q", q);
     return "courses/list";
   }
 
