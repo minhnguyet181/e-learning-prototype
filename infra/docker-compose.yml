@@ -1,0 +1,29 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: elearning-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: elearning_db
+      MYSQL_USER: elearning
+      MYSQL_PASSWORD: elearning
+      TZ: Asia/Ho_Chi_Minh
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --default-time-zone=+07:00
+
+  adminer:
+    image: adminer:4
+    container_name: elearning-adminer
+    restart: unless-stopped
+    ports:
+      - "8081:8080"
+
+volumes:
+  mysql_data:

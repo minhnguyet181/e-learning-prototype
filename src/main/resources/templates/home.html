@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+  <body th:replace="layout :: layout('Trang chủ', ~{::content})">
+    <th:block th:fragment="content">
+    <div class="p-4 p-md-5 mb-4 rounded text-bg-light border">
+      <div class="col-lg-8 px-0">
+        <h1 class="display-6 fw-bold">E-Learning Prototype</h1>
+        <p class="lead my-3">
+          Demo luồng web bằng Spring Boot + Thymeleaf (MVC): đăng nhập/đăng ký → danh sách khóa học →
+          chi tiết khóa học → vào bài học → đánh dấu hoàn thành.
+        </p>
+        <div class="d-flex gap-2">
+          <a class="btn btn-primary" th:href="@{/courses}">Xem khóa học</a>
+          <a class="btn btn-outline-secondary" th:if="${currentUser == null}" th:href="@{/login}">Đăng nhập</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-6">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">Tài khoản seed</h5>
+            <ul class="mb-0">
+              <li><strong>admin</strong> / admin123</li>
+              <li><strong>teacher</strong> / teacher123</li>
+              <li><strong>student</strong> / student123</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">Khóa học demo</h5>
+            <p class="mb-1">Khóa học có mật khẩu enrol để demo:</p>
+            <div class="badge text-bg-dark">join123</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </th:block>
+  </body>
+</html>
+

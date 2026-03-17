@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+  <body th:replace="layout :: layout('Bài học', ~{::content})">
+    <th:block th:fragment="content">
+      <div class="mb-3">
+        <a class="link-secondary small" th:href="@{/courses/{id}(id=${course.id})}">← Quay lại khóa học</a>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex flex-wrap gap-2 align-items-center mb-2">
+            <span class="badge text-bg-secondary" th:text="${course.courseCode}">CODE</span>
+            <span class="badge text-bg-dark" th:text="${course.courseName}">Course</span>
+          </div>
+          <h1 class="h4" th:text="${lesson.lessonTitle}">Lesson title</h1>
+
+          <div th:if="${currentUser == null}" class="alert alert-info">
+            Bạn cần <a th:href="@{/login}">đăng nhập</a> để học bài.
+          </div>
+          <div th:if="${currentUser != null and !enrolled}" class="alert alert-warning">
+            Bạn chưa đăng ký khóa học. Vui lòng quay lại và đăng ký trước.
+          </div>
+
+          <div th:if="${currentUser != null and enrolled}">
+            <div class="mb-3">
+              <div class="text-muted small mb-1">Nội dung</div>
+              <div class="border rounded p-3" th:text="${lesson.lessonContent}">Content</div>
+            </div>
+
+            <form th:action="@{/courses/{courseId}/lessons/{lessonId}/complete(courseId=${course.id},lessonId=${lesson.id})}" method="post">
+              <button class="btn btn-success" type="submit">Đánh dấu hoàn thành</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </th:block>
+  </body>
+</html>
+

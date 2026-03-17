@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+  <body th:replace="layout :: layout('Chi tiết khóa học', ~{::content})">
+    <th:block th:fragment="content">
+      <div class="mb-3">
+        <a class="link-secondary small" th:href="@{/courses}">← Quay lại danh sách</a>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="d-flex flex-wrap gap-2 align-items-center mb-2">
+            <span class="badge text-bg-secondary" th:text="${course.courseCode}">CODE</span>
+            <span class="badge text-bg-success" th:text="${course.status}">STATUS</span>
+            <span class="badge text-bg-dark" th:if="${course.semester}" th:text="${course.semester}">SEM</span>
+          </div>
+          <h1 class="h4" th:text="${course.courseName}">Course name</h1>
+          <p class="text-muted" th:text="${course.description}">desc</p>
+
+          <div th:if="${currentUser == null}" class="alert alert-info mb-0">
+            Bạn cần <a th:href="@{/login}">đăng nhập</a> để đăng ký khóa học và vào bài học.
+          </div>
+
+          <div th:if="${currentUser != null}">
+            <div th:if="${enrolled}" class="alert alert-success mb-0">
+              Bạn đã đăng ký khóa học này.
+            </div>
+            <div th:if="${!enrolled}">
+              <form th:action="@{/courses/{id}/enroll(id=${course.id})}" method="post" class="row g-2 align-items-end">
+                <div class="col-md-6" th:if="${course.enrollPassword != null and !#strings.isEmpty(course.enrollPassword)}">
+                  <label class="form-label">Mật khẩu khóa học</label>
+                  <input class="form-control" name="password" placeholder="VD: join123" />
+                </div>
+                <div class="col-md-3">
+                  <button class="btn btn-primary" type="submit">Đăng ký</button>
+                </div>
+              </form>
+              <div class="small text-muted mt-1" th:if="${course.enrollPassword != null and !#strings.isEmpty(course.enrollPassword)}">
+                Khóa demo dùng password: <strong>join123</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="h5 mb-3">Danh sách bài học</h2>
+      <div class="list-group">
+        <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+           th:each="l : ${lessons}"
+           th:href="@{/courses/{courseId}/lessons/{lessonId}(courseId=${course.id},lessonId=${l.id})}">
+          <div>
+            <div class="fw-semibold" th:text="${l.lessonOrder + '. ' + l.lessonTitle}">Lesson</div>
+            <div class="small text-muted" th:text="${#strings.abbreviate(l.lessonContent, 90)}">preview</div>
+          </div>
+          <span class="badge text-bg-light border">Mở</span>
+        </a>
+      </div>
+    </th:block>
+  </body>
+</html>
+
