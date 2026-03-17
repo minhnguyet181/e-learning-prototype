@@ -6,23 +6,23 @@
         <div class="container">
           <h2>Đăng ký</h2>
           <form th:action="@{/register}" th:object="${form}" method="post">
-            <label>Username</label>
-            <input th:field="*{username}" autocomplete="username" />
-            <div class="error-text" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
-
-            <label>Email</label>
-            <input th:field="*{email}" autocomplete="email" />
-            <div class="error-text" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
-
             <label>Họ và tên</label>
             <input th:field="*{fullName}" autocomplete="name" />
             <div class="error-text" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></div>
+
+            <label>Email</label>
+            <input th:field="*{email}" type="email" autocomplete="email" />
+            <div class="error-text" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
 
             <label>Mật khẩu</label>
             <input th:field="*{password}" type="password" autocomplete="new-password" />
             <div class="error-text" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
 
-            <button type="submit">Tạo tài khoản</button>
+            <label>Xác nhận mật khẩu</label>
+            <input th:field="*{confirmPassword}" type="password" autocomplete="new-password" />
+            <div class="error-text" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></div>
+
+            <button type="submit">Đăng ký</button>
           </form>
 
           <div class="helper">

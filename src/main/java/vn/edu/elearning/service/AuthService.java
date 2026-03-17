@@ -22,16 +22,13 @@ public class AuthService {
   }
 
   @Transactional
-  public User register(String username, String email, String fullName, String rawPassword) {
-    if (userRepository.existsByUsername(username)) {
-      throw new IllegalArgumentException("Username đã tồn tại");
-    }
+  public User register(String email, String fullName, String rawPassword) {
     if (userRepository.existsByEmail(email)) {
       throw new IllegalArgumentException("Email đã tồn tại");
     }
 
     User u = new User();
-    u.setUsername(username);
+    u.setUsername(email); // Use email as username
     u.setEmail(email);
     u.setFullName(fullName);
     u.setRole(UserRole.STUDENT);
@@ -40,16 +37,16 @@ public class AuthService {
   }
 
   @Transactional
-  public User login(String username, String rawPassword) {
-    User u = userRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException("Sai username hoặc mật khẩu"));
+  public User login(String email, String rawPassword) {
+    User u = userRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("Sai email hoặc mật khẩu"));
     if (Boolean.FALSE.equals(u.getActive()) || Boolean.TRUE.equals(u.getLocked())) {
       throw new IllegalArgumentException("Tài khoản đang bị khóa hoặc không hoạt động");
     }
     if (!passwordService.matches(rawPassword, u.getPasswordHash())) {
-      throw new IllegalArgumentException("Sai username hoặc mật khẩu");
+      throw new IllegalArgumentException("Sai email hoặc mật khẩu");
     }
     u.setLastLogin(Instant.now());
-    return u;
+    return userRepository.save(u);
   }
 }
 

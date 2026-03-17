@@ -6,8 +6,8 @@ import jakarta.validation.constraints.Size;
 
 public class RegisterForm {
   @NotBlank
-  @Size(min = 3, max = 50)
-  private String username;
+  @Size(max = 100)
+  private String fullName;
 
   @NotBlank
   @Email
@@ -15,20 +15,12 @@ public class RegisterForm {
   private String email;
 
   @NotBlank
-  @Size(max = 100)
-  private String fullName;
-
-  @NotBlank
   @Size(min = 6, max = 100)
   private String password;
 
-  public String getUsername() {
-    return username;
-  }
-
-  public void setUsername(String username) {
-    this.username = username;
-  }
+  @NotBlank
+  @Size(min = 6, max = 100)
+  private String confirmPassword;
 
   public String getEmail() {
     return email;
@@ -52,6 +44,14 @@ public class RegisterForm {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  public String getConfirmPassword() {
+    return confirmPassword;
+  }
+
+  public void setConfirmPassword(String confirmPassword) {
+    this.confirmPassword = confirmPassword;
   }
 }
 

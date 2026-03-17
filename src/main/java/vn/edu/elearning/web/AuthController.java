@@ -13,6 +13,7 @@ import vn.edu.elearning.domain.User;
 import vn.edu.elearning.service.AuthService;
 import vn.edu.elearning.web.dto.LoginForm;
 import vn.edu.elearning.web.dto.RegisterForm;
+import vn.edu.elearning.web.dto.ForgotPasswordForm;
 
 @Controller
 public class AuthController {
@@ -43,7 +44,7 @@ public class AuthController {
     }
 
     try {
-      User u = authService.login(form.getUsername(), form.getPassword());
+      User u = authService.login(form.getEmail(), form.getPassword());
       session.setAttribute(SessionKeys.USER_ID, u.getId());
       return "redirect:/";
     } catch (IllegalArgumentException e) {
@@ -57,6 +58,14 @@ public class AuthController {
   public String logout(HttpSession session) {
     session.invalidate();
     return "redirect:/";
+  }
+
+  @GetMapping("/forgot-password")
+  public String forgotPasswordForm(Model model) {
+    if (!model.containsAttribute("form")) {
+      model.addAttribute("form", new ForgotPasswordForm());
+    }
+    return "auth/forgot-password";
   }
 
   @GetMapping("/register")
@@ -78,8 +87,15 @@ public class AuthController {
       return "redirect:/register";
     }
 
+    // Check password confirmation
+    if (!form.getPassword().equals(form.getConfirmPassword())) {
+      ra.addFlashAttribute("error", "Mật khẩu xác nhận không khớp");
+      ra.addFlashAttribute("form", form);
+      return "redirect:/register";
+    }
+
     try {
-      authService.register(form.getUsername(), form.getEmail(), form.getFullName(), form.getPassword());
+      authService.register(form.getEmail(), form.getFullName(), form.getPassword());
       ra.addFlashAttribute("success", "Đăng ký thành công. Vui lòng đăng nhập.");
       return "redirect:/login";
     } catch (IllegalArgumentException e) {
