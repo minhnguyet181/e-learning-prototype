@@ -64,12 +64,12 @@ public class CourseController {
       RedirectAttributes ra) {
     Long userId = (Long) session.getAttribute(SessionKeys.USER_ID);
     if (userId == null) {
-      ra.addFlashAttribute("error", "Bạn cần đăng nhập để đăng ký khóa học");
+      ra.addFlashAttribute("error", "You need to login to enroll in a course");
       return "redirect:/login";
     }
     try {
       courseService.enroll(userId, courseId, password);
-      ra.addFlashAttribute("success", "Đăng ký khóa học thành công");
+      ra.addFlashAttribute("success", "Successfully enrolled in course");
     } catch (IllegalArgumentException e) {
       ra.addFlashAttribute("error", e.getMessage());
     }

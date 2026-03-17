@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
-  <body th:replace="layout :: layout('Bài học', ~{::content})">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <body th:replace="layout :: layout('Lesson', ~{::content})">
     <th:block th:fragment="content">
       <div class="page">
-        <a th:href="@{/courses/{id}(id=${course.id})}">← Quay lại khóa học</a>
+        <a th:href="@{/courses/{id}(id=${course.id})}">← Back to course</a>
 
         <div class="card" style="margin-top: 1rem;">
-          <img src="https://via.placeholder.com/600x280" alt="Bài học">
+          <img src="https://via.placeholder.com/600x280" alt="Lesson">
           <div class="content">
             <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center; margin-bottom:0.5rem;">
               <span class="badge" th:text="${course.courseCode}">CODE</span>
@@ -15,21 +15,21 @@
             <h4 th:text="${lesson.lessonTitle}">Lesson title</h4>
 
             <div th:if="${currentUser == null}" class="helper">
-              Bạn cần <a th:href="@{/login}">đăng nhập</a> để học bài.
+              You need to <a th:href="@{/login}">login</a> to access lessons.
             </div>
             <div th:if="${currentUser != null and !enrolled}" class="helper">
-              Bạn chưa đăng ký khóa học. Vui lòng quay lại và đăng ký trước.
+              You are not enrolled in this course. Please go back and enroll first.
             </div>
 
             <div th:if="${currentUser != null and enrolled}">
               <div style="margin-top: 0.75rem;">
-                <div class="badge" style="margin-bottom: 0.5rem;">Nội dung</div>
+                <div class="badge" style="margin-bottom: 0.5rem;">Content</div>
                 <div style="border: 1px solid #ddd; border-radius: 8px; padding: 1rem; background: #fff;"
                      th:text="${lesson.lessonContent}">Content</div>
               </div>
 
               <form th:action="@{/courses/{courseId}/lessons/{lessonId}/complete(courseId=${course.id},lessonId=${lesson.id})}" method="post">
-                <button type="submit" style="max-width: 260px; margin-top: 1rem;">Đánh dấu hoàn thành</button>
+                <button type="submit" style="max-width: 260px; margin-top: 1rem;">Mark as Complete</button>
               </form>
             </div>
           </div>
